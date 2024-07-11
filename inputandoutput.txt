@@ -1,0 +1,38 @@
+INPUT 1:
+	Ảnh or Video or Camera 
+
+OUTPUT 1:
+-> Model Mediapipe giúp mình detect bàn tay (bao gồm 21 điểm)
+-> VD: landmark {
+  x: 0.930827856
+  y: 0.931713939
+  z: 8.18641936e-008
+}
+....
+landmark {
+  x: 0.822286844
+  y: 0.802336812
+  z: -0.0739604607
+}
+-> Sau đó chúng ta sẽ chuyển về dạng list. VD: [[508, 366], ..., [488, 397]] (Dựa theo size ảnh or video) 
+-> Sau đó pre_process (chuyển thành các giá trị -1 <= x <= 1).
+  	Lưu ý! Các điểm sẽ được sửa theo điểm [0]. VD: [0.0, 0.0, ..., -0.25, -0.31]
+----------------------------------------------------------------------------------
+INPUT 2: (Training)
+	21 điểm đã được pre_process sẽ được lưu vào 1 file .csv với format {class_label}, 0.0, 0.0, ..., -0.25, -0.31
+	Lưu ý! {class_label} phải là số int
+
+- Sử dụng 1 model CNN để train
+
+OUTPUT 2:
+	model.hdf5
+	model.tflite (cần tìm hiểu tại sao)
+------------------------------------------------------------------------------
+INPUT 3: (Predict)
+	21 điểm đã được pre_process
+	file label.csv chứa các class
+
+- Sử dụng model.tflite để predict
+
+OUTPUT 3:
+	Class đã được predict 
